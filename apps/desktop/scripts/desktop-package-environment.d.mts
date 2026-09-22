@@ -14,8 +14,8 @@ export function loadDesktopPackageEnvironment(
 ): NodeJS.ProcessEnv
 
 /**
- * Validate release configuration before preparation without invoking a token or Apple's services.
- * @param environment File-owned release settings.
+ * Validate packaging configuration before preparation without invoking a token or Apple's services.
+ * @param environment File-owned release settings, or inherited build settings for unsigned packaging.
  * @param target Selected release target.
  * @param options Explicit packaging mode.
  * @returns Nothing.

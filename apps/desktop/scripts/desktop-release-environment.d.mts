@@ -43,7 +43,7 @@ export type MacOSNotarizationEnvironment =
   | MacOSKeychainNotarizationEnvironment
 
 /**
- * Resolve and validate the application identifier shared by every platform target.
+ * Resolve and validate the application identifier; local unsigned macOS builds use a private default.
  * @param env - Packaging environment.
  * @returns Reverse-DNS application identifier.
  */

@@ -23,6 +23,13 @@ async function withDirectory(action: (directory: string) => Promise<void>): Prom
 }
 
 describe('Desktop local packaging configuration', () => {
+  it('allows unsigned macOS packaging without release settings but validates an explicit application ID', () => {
+    expect(() => { validateDesktopPackageEnvironment({}, MACOS, { unsigned: true }) }).not.toThrow()
+    expect(() => { validateDesktopPackageEnvironment({ DSH_DESKTOP_APP_ID: 'invalid' }, MACOS, { unsigned: true }) })
+      .toThrow(/reverse-DNS/u)
+    expect(() => { validateDesktopPackageEnvironment({}, MACOS) }).toThrow(/DSH_DESKTOP_APP_ID/u)
+  })
+
   it('takes cache concurrency from the Windows file and defaults to four without ambient overrides', async () => {
     await withDirectory(async (directory) => {
       const parent = { DSH_DESKTOP_WINDOWS_SIGNATURE_CACHE_CONCURRENCY: '8' }

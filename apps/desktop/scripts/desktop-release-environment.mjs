@@ -56,12 +56,14 @@ export function resolveNpmRegistry(env) {
 }
 
 /**
- * Resolve and validate the application identifier shared by every platform target.
+ * Resolve and validate the application identifier; local unsigned macOS builds use a private default.
  * @param {NodeJS.ProcessEnv} env - Packaging environment.
  * @returns {string} Reverse-DNS application identifier.
  */
 export function resolveDesktopAppId(env) {
-  const appId = requireEnvironmentValue(env, DESKTOP_APP_ID_ENV)
+  const appId = env.DSH_DESKTOP_UNSIGNED === '1' && env.DSH_DESKTOP_TARGET_PLATFORM === 'darwin' && env[DESKTOP_APP_ID_ENV] === undefined
+    ? 'com.deepseek.harness.local'
+    : requireEnvironmentValue(env, DESKTOP_APP_ID_ENV)
   if (!/^[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+$/u.test(appId)) {
     throw new Error(`desktop release environment: ${DESKTOP_APP_ID_ENV} must be a reverse-DNS identifier`)
   }
