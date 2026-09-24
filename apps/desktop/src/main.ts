@@ -933,6 +933,9 @@ async function main(): Promise<void> {
     const window = mainWindow ?? createMainWindow()
     await navigateMain(applicationUrl)
     if (isQuitting() || recovery.active || window.isDestroyed()) return
+    // The workspace opens filling the display; `maximize` also reveals the window, so the
+    // following `show` only orders focus.
+    if (!window.isMaximized()) window.maximize()
     window.show()
     enteredWorkspace = true
     if (welcomeWindow !== undefined) {
